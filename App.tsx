@@ -1,20 +1,32 @@
 /**
- * React Native Tutorial - Todo App (part 1)
- * - https://www.youtube.com/watch?v=uLHFPt9B2Os
+ * React Native Tutorial - Todo App (part 2)
+ * - https://www.youtube.com/watch?v=SGEitne8N-Q
  *
  * @format
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
-import Header from './components/header';
+import {StyleSheet, View, FlatList} from 'react-native';
+import Header from './components/Header';
+import TodoItem from './components/TodoItem';
+
+export interface ITodo {
+  key: string;
+  text: string;
+}
 
 export default function App() {
-  const [todos, setTodos] = useState([
+  const [todos, setTodos] = useState<ITodo[]>([
     {text: 'buy coffee', key: '1'},
     {text: 'create an app', key: '2'},
-    {text: 'play on the pc', key: '3'},
+    {text: 'create another one', key: '3'},
   ]);
+
+  const pressHandler = (key: string): void => {
+    setTodos(prevTodos => {
+      return prevTodos.filter(todo => todo.key != key);
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +36,9 @@ export default function App() {
         <View style={styles.list}>
           <FlatList
             data={todos}
-            renderItem={({item}) => <Text>{item.text}</Text>}
+            renderItem={({item}) => (
+              <TodoItem item={item} pressHandler={pressHandler} />
+            )}
           />
         </View>
       </View>
