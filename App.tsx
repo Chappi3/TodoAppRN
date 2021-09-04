@@ -1,6 +1,6 @@
 /**
- * React Native Tutorial - Todo App (part 2)
- * - https://www.youtube.com/watch?v=SGEitne8N-Q
+ * React Native Tutorial - Todo App (part 3)
+ * - https://www.youtube.com/watch?v=LH_SoXiu_Hk
  *
  * @format
  */
@@ -9,6 +9,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
+import AddTodo from './components/AddTodo';
 
 export interface ITodo {
   key: string;
@@ -28,11 +29,17 @@ export default function App() {
     });
   };
 
+  const submitHandler = (text: string): void => {
+    setTodos(prevTodos => {
+      return [{text: text, key: Math.random().toString()}, ...prevTodos];
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.content}>
-        {/* to form */}
+        <AddTodo submitHandler={submitHandler} />
         <View style={styles.list}>
           <FlatList
             data={todos}
