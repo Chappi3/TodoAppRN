@@ -1,6 +1,6 @@
 /**
- * React Native Tutorial - Dismissing the Keyboard
- * - https://www.youtube.com/watch?v=IW-SEiRjUsI
+ * React Native Tutorial - Flexbox Basics
+ * - https://www.youtube.com/watch?v=R2eqAgR_KlU
  *
  * @format
  */
@@ -17,6 +17,7 @@ import {
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/AddTodo';
+import Sandbox from './components/Sandbox';
 
 export interface ITodo {
   key: string;
@@ -49,6 +50,7 @@ export default function App() {
   };
 
   return (
+    // <Sandbox />
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
@@ -77,9 +79,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   content: {
+    flex: 1,
     padding: 40,
   },
   list: {
+    flex: 1,
     marginTop: 20,
   },
 });
