@@ -1,12 +1,12 @@
 /**
- * React Native Tutorial - Todo App (part 3)
- * - https://www.youtube.com/watch?v=LH_SoXiu_Hk
+ * React Native Tutorial - Alerts
+ * - https://www.youtube.com/watch?v=oVA9JgTTiT0
  *
  * @format
  */
 
 import React, {useState} from 'react';
-import {StyleSheet, View, FlatList} from 'react-native';
+import {StyleSheet, View, FlatList, Alert} from 'react-native';
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/AddTodo';
@@ -30,9 +30,15 @@ export default function App() {
   };
 
   const submitHandler = (text: string): void => {
-    setTodos(prevTodos => {
-      return [{text: text, key: Math.random().toString()}, ...prevTodos];
-    });
+    if (text.length > 3) {
+      setTodos(prevTodos => {
+        return [{text: text, key: Math.random().toString()}, ...prevTodos];
+      });
+    } else {
+      Alert.alert('OOPS!', 'Todos must be over 3 chars long', [
+        {text: 'Understood', onPress: () => {}}, // onPress: () => console.log('alert closed')
+      ]);
+    }
   };
 
   return (
