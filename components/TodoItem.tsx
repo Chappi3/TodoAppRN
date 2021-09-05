@@ -9,6 +9,7 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {ITodo} from '../App';
+import {colors} from '../styles/Colors';
 
 type TodoItemParams = {
   item: ITodo;
@@ -39,7 +40,7 @@ export default function TodoItem({
               style={styles.itemIcon}
               icon={faEdit}
               size={18}
-              color={'skyblue'}
+              color={colors.editIcon}
             />
           </Pressable>
           <Pressable onPress={() => pressRemoveHandler(item.key)}>
@@ -47,7 +48,7 @@ export default function TodoItem({
               style={styles.itemIcon}
               icon={faTrashAlt}
               size={18}
-              color={'red'}
+              color={colors.removeIcon}
             />
           </Pressable>
         </View>
@@ -60,21 +61,22 @@ const styles = StyleSheet.create({
   item: {
     padding: 16,
     marginTop: 16,
-    borderColor: 'coral',
+    borderColor: `${colors.primary}`,
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#f4f4f4',
+    backgroundColor: `${colors.itemBackgroundLight}`,
   },
   itemText: {
     flex: 16,
+    color: `${colors.fontColorLight}`,
   },
   itemTextCompleted: {
     textDecorationLine: 'line-through',
-    color: 'gray',
+    color: `${colors.fontColorCompletedLight}`,
     flex: 16,
   },
   itemIcons: {

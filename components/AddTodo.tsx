@@ -1,5 +1,14 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Button, Alert} from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Button,
+  Alert,
+  Pressable,
+  Text,
+} from 'react-native';
+import {colors} from '../styles/Colors';
 
 type AddTodoParams = {
   pressAddTodoHandler: any;
@@ -20,18 +29,29 @@ export default function AddTodo({pressAddTodoHandler}: AddTodoParams) {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        flexDirection: 'column',
+      }}>
       <TextInput
         style={styles.input}
         placeholder="New todo..."
         onChangeText={setText}
         value={text}
+        placeholderTextColor={colors.fontColorLight}
       />
       <Button
         onPress={() => pressSubmitTodoHandler(text)}
         title="add todo"
-        color="coral"
+        color={colors.primary}
       />
+      {/* <View style={{backgroundColor: '#d4d', flexDirection: 'row'}}>
+        <Pressable onPress={() => pressSubmitTodoHandler(text)}>
+          <View style={{backgroundColor: `${colors.primary}`, flex: 1}}>
+            <Text style={{color: colors.fontColorLight}}>Add todo</Text>
+          </View>
+        </Pressable>
+      </View> */}
     </View>
   );
 }
@@ -41,7 +61,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 8,
     paddingVertical: 6,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomWidth: 2,
+    borderBottomColor: `${colors.primary}`,
+    color: `${colors.fontColorLight}`,
   },
 });

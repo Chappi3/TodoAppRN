@@ -1,5 +1,5 @@
 /**
- * Fix Completed feature
+ * Fix Colors as Object
  *
  * @format
  */
@@ -11,10 +11,12 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   Keyboard,
+  StatusBar,
 } from 'react-native';
 import Header from './components/Header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/AddTodo';
+import {colors} from './styles/Colors';
 import Sandbox from './components/Sandbox';
 
 export interface ITodo {
@@ -59,40 +61,43 @@ export default function App() {
 
   return (
     // <Sandbox />
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <View style={styles.container}>
-        <Header />
-        <View style={styles.content}>
-          <AddTodo pressAddTodoHandler={pressAddTodoHandler} />
-          <View style={styles.list}>
-            <FlatList
-              data={todos}
-              renderItem={({item}) => (
-                <TodoItem
-                  item={item}
-                  pressRemoveHandler={pressRemoveHandler}
-                  pressCompleteHandler={pressCompleteHandler}
-                />
-              )}
-            />
+    <>
+      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
+        <View style={styles.container}>
+          <Header />
+          <View style={styles.content}>
+            <AddTodo pressAddTodoHandler={pressAddTodoHandler} />
+            <View style={styles.list}>
+              <FlatList
+                data={todos}
+                renderItem={({item}) => (
+                  <TodoItem
+                    item={item}
+                    pressRemoveHandler={pressRemoveHandler}
+                    pressCompleteHandler={pressCompleteHandler}
+                  />
+                )}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: `${colors.backgroundLight}`,
   },
   content: {
     flex: 1,
-    padding: 40,
+    padding: 20,
   },
   list: {
     flex: 1,
