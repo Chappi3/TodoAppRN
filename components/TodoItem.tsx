@@ -7,13 +7,7 @@ import {
   View,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faSquare,
-  faCheckSquare,
-  faTrashAlt,
-  faEdit,
-} from '@fortawesome/free-regular-svg-icons';
-import {IconDefinition} from '@fortawesome/fontawesome-common-types';
+import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {ITodo} from '../App';
 
 type TodoItemParams = {
@@ -27,35 +21,27 @@ export default function TodoItem({
   pressRemoveHandler,
   pressCompleteHandler,
 }: TodoItemParams) {
-  let itemCompleted = (): IconDefinition => {
+  const itemCompleted = () => {
     if (item.completed) {
-      return faCheckSquare;
+      return styles.itemTextCompleted;
     } else {
-      return faSquare;
+      return styles.itemText;
     }
   };
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => pressCompleteHandler(item.key)}>
       <View style={styles.item}>
-        <Text style={styles.itemText}>{item.text}</Text>
+        <Text style={itemCompleted()}>{item.text}</Text>
         <View style={styles.itemIcons}>
-          <Pressable onPress={() => pressCompleteHandler(item.key)}>
-            <FontAwesomeIcon
-              style={styles.itemIcon}
-              icon={itemCompleted()}
-              size={18}
-              color={'black'}
-            />
-          </Pressable>
-          {/* <Pressable onPress={() => pressHandler(item.key)}>
+          <Pressable onPress={() => console.warn('edit pressed', item.key)}>
             <FontAwesomeIcon
               style={styles.itemIcon}
               icon={faEdit}
               size={18}
               color={'skyblue'}
             />
-          </Pressable> */}
+          </Pressable>
           <Pressable onPress={() => pressRemoveHandler(item.key)}>
             <FontAwesomeIcon
               style={styles.itemIcon}
@@ -84,7 +70,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f4f4f4',
   },
   itemText: {
+    flex: 16,
+  },
+  itemTextCompleted: {
     textDecorationLine: 'line-through',
+    color: 'gray',
     flex: 16,
   },
   itemIcons: {

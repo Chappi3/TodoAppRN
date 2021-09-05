@@ -1,6 +1,5 @@
 /**
- * React Native Tutorial - Icons & More Flexbox
- * - https://www.youtube.com/watch?v=C4ikFaP0a5o
+ * Fix Completed feature
  *
  * @format
  */
@@ -10,7 +9,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Alert,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
@@ -48,13 +46,15 @@ export default function App() {
   };
 
   const pressCompleteHandler = (key: string): void => {
-    const itemIndex = todos.findIndex(item => item.key === key);
-    let updatedTodos = todos;
-    updatedTodos[itemIndex] = {
-      ...updatedTodos[itemIndex],
-      completed: !updatedTodos[itemIndex].completed,
-    };
-    setTodos(updatedTodos);
+    setTodos(prevTodos => {
+      const itemIndex = prevTodos.findIndex(item => item.key === key);
+      let updatedTodos = prevTodos;
+      updatedTodos[itemIndex] = {
+        ...updatedTodos[itemIndex],
+        completed: !updatedTodos[itemIndex].completed,
+      };
+      return [...updatedTodos];
+    });
   };
 
   return (
