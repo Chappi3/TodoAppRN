@@ -1,6 +1,6 @@
 /**
- * React Native Tutorial - Flexbox Basics
- * - https://www.youtube.com/watch?v=R2eqAgR_KlU
+ * React Native Tutorial - Icons & More Flexbox
+ * - https://www.youtube.com/watch?v=C4ikFaP0a5o
  *
  * @format
  */
@@ -22,31 +22,39 @@ import Sandbox from './components/Sandbox';
 export interface ITodo {
   key: string;
   text: string;
+  completed: boolean;
 }
 
 export default function App() {
   const [todos, setTodos] = useState<ITodo[]>([
-    {text: 'buy coffee', key: '1'},
-    {text: 'create an app', key: '2'},
-    {text: 'create another one', key: '3'},
+    {text: 'buy coffee', key: '1', completed: false},
+    {text: 'create an app', key: '2', completed: true},
+    {text: 'create another one', key: '3', completed: false},
   ]);
 
-  const pressHandler = (key: string): void => {
+  const pressRemoveHandler = (key: string): void => {
     setTodos(prevTodos => {
       return prevTodos.filter(todo => todo.key != key);
     });
   };
 
-  const submitHandler = (text: string): void => {
-    if (text.length > 3) {
-      setTodos(prevTodos => {
-        return [{text: text, key: Math.random().toString()}, ...prevTodos];
-      });
-    } else {
-      Alert.alert('OOPS!', 'Todos must be over 3 chars long', [
-        {text: 'Understood', onPress: () => {}}, // onPress: () => console.log('alert closed')
-      ]);
-    }
+  const pressAddTodoHandler = (text: string): void => {
+    setTodos(prevTodos => {
+      return [
+        {text: text, key: Math.random().toString(), completed: false},
+        ...prevTodos,
+      ];
+    });
+  };
+
+  const pressCompleteHandler = (key: string): void => {
+    const itemIndex = todos.findIndex(item => item.key === key);
+    let updatedTodos = todos;
+    updatedTodos[itemIndex] = {
+      ...updatedTodos[itemIndex],
+      completed: !updatedTodos[itemIndex].completed,
+    };
+    setTodos(updatedTodos);
   };
 
   return (
@@ -58,12 +66,16 @@ export default function App() {
       <View style={styles.container}>
         <Header />
         <View style={styles.content}>
-          <AddTodo submitHandler={submitHandler} />
+          <AddTodo pressAddTodoHandler={pressAddTodoHandler} />
           <View style={styles.list}>
             <FlatList
               data={todos}
               renderItem={({item}) => (
-                <TodoItem item={item} pressHandler={pressHandler} />
+                <TodoItem
+                  item={item}
+                  pressRemoveHandler={pressRemoveHandler}
+                  pressCompleteHandler={pressCompleteHandler}
+                />
               )}
             />
           </View>
