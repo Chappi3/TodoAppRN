@@ -1,5 +1,5 @@
 /**
- * Fix Colors as Object
+ * Remove Sandbox
  *
  * @format
  */
@@ -17,7 +17,6 @@ import Header from './components/Header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/AddTodo';
 import {colors} from './styles/Colors';
-import Sandbox from './components/Sandbox';
 
 export interface ITodo {
   key: string;
@@ -60,7 +59,6 @@ export default function App() {
   };
 
   return (
-    // <Sandbox />
     <>
       <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
       <TouchableWithoutFeedback
