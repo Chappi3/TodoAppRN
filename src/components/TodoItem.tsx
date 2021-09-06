@@ -8,32 +8,35 @@ import {
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
-import {ITodo} from '../App';
+import {ITheme, ITodo} from '../App';
 import {colors} from '../styles/Colors';
 
 type TodoItemParams = {
   item: ITodo;
-  pressRemoveHandler: any;
-  pressCompleteHandler: any;
+  pressRemoveHandler: (key: string) => void;
+  pressCompleteHandler: (key: string) => void;
+  theme: ITheme;
 };
 
 export default function TodoItem({
   item,
   pressRemoveHandler,
   pressCompleteHandler,
+  theme,
 }: TodoItemParams) {
-  const itemCompleted = () => {
-    if (item.completed) {
-      return styles.itemTextCompleted;
-    } else {
-      return styles.itemText;
-    }
-  };
-
   return (
     <TouchableOpacity onPress={() => pressCompleteHandler(item.key)}>
-      <View style={styles.item}>
-        <Text style={itemCompleted()}>{item.text}</Text>
+      <View style={[styles.item, {backgroundColor: theme.backgroundCard}]}>
+        <Text
+          style={[
+            styles.itemText,
+            {
+              textDecorationLine: item.completed ? 'line-through' : 'none',
+              color: item.completed ? theme.color : theme.colorCompleted,
+            },
+          ]}>
+          {item.text}
+        </Text>
         <View style={styles.itemIcons}>
           <Pressable onPress={() => console.warn('edit pressed', item.key)}>
             <FontAwesomeIcon
@@ -68,15 +71,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: `${colors.itemBackgroundLight}`,
   },
   itemText: {
-    flex: 16,
-    color: `${colors.fontColorLight}`,
-  },
-  itemTextCompleted: {
-    textDecorationLine: 'line-through',
-    color: `${colors.fontColorCompletedLight}`,
     flex: 16,
   },
   itemIcons: {

@@ -8,13 +8,15 @@ import {
   Pressable,
   Text,
 } from 'react-native';
+import {ITheme} from '../App';
 import {colors} from '../styles/Colors';
 
 type AddTodoParams = {
   pressAddTodoHandler: any;
+  theme: ITheme;
 };
 
-export default function AddTodo({pressAddTodoHandler}: AddTodoParams) {
+export default function AddTodo({pressAddTodoHandler, theme}: AddTodoParams) {
   const [text, setText] = useState('');
 
   const pressSubmitTodoHandler = (input: string): void => {
@@ -34,17 +36,18 @@ export default function AddTodo({pressAddTodoHandler}: AddTodoParams) {
         flexDirection: 'column',
       }}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.color}]}
         placeholder="New todo..."
         onChangeText={setText}
         value={text}
-        placeholderTextColor={colors.fontColorLight}
+        placeholderTextColor={theme.color}
       />
       <Button
         onPress={() => pressSubmitTodoHandler(text)}
         title="add todo"
         color={colors.primary}
       />
+      {/* TODO: Change from normal button to change font color */}
       {/* <View style={{backgroundColor: '#d4d', flexDirection: 'row'}}>
         <Pressable onPress={() => pressSubmitTodoHandler(text)}>
           <View style={{backgroundColor: `${colors.primary}`, flex: 1}}>
@@ -63,6 +66,5 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderBottomWidth: 2,
     borderBottomColor: `${colors.primary}`,
-    color: `${colors.fontColorLight}`,
   },
 });
