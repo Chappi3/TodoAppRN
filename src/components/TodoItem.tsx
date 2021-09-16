@@ -1,50 +1,170 @@
-import React from 'react';
+import React, { useState } from 'react'
 import {
+  Button,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
-import {ITheme, ITodo} from '../App';
-import {colors} from '../styles/Colors';
+} from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
+import { ITheme, ITodo } from '../App'
+import { colors } from '../styles/Colors'
 
 type TodoItemParams = {
-  item: ITodo;
-  pressRemoveHandler: (key: string) => void;
-  pressCompleteHandler: (key: string) => void;
-  theme: ITheme;
-};
+  item: ITodo
+  theme: ITheme
+  pressRemoveHandler: (key: string) => void
+  pressCompleteHandler: (key: string) => void
+  pressEditHandler: (key: string, text: string) => void
+}
 
 export default function TodoItem({
   item,
+  theme,
   pressRemoveHandler,
   pressCompleteHandler,
-  theme,
+  pressEditHandler,
 }: TodoItemParams) {
+  const [editModal, setEditModal] = useState(false)
+  const [editText, setEditText] = useState(item.text)
+
+  const submitEdit = () => {
+    pressEditHandler(item.key, editText)
+    setEditModal(false)
+  }
+
+  const styles = StyleSheet.create({
+    item: {
+      padding: 16,
+      marginTop: 16,
+      borderColor: `${theme.primary}`,
+      borderWidth: 1,
+      borderStyle: 'solid',
+      borderRadius: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    itemText: {
+      flex: 16,
+    },
+    itemIcons: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      marginLeft: 5,
+    },
+    itemIcon: {
+      margin: 5,
+    },
+    editModal: {
+      marginTop: 70,
+      alignSelf: 'center',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 25,
+      width: 380,
+      height: 300,
+      borderStyle: 'solid',
+      borderColor: `${theme.primary}`,
+      borderWidth: 2,
+      borderRadius: 18,
+    },
+    modalInput: {
+      width: 200,
+      paddingHorizontal: 8,
+      paddingVertical: 6,
+      borderBottomWidth: 2,
+      borderBottomColor: `${theme.primary}`,
+    },
+  })
+
   return (
     <TouchableOpacity onPress={() => pressCompleteHandler(item.key)}>
-      <View style={[styles.item, {backgroundColor: theme.backgroundCard}]}>
+      <View style={[styles.item, { backgroundColor: theme.backgroundCard }]}>
         <Text
           style={[
             styles.itemText,
             {
               textDecorationLine: item.completed ? 'line-through' : 'none',
-              color: item.completed ? theme.color : theme.colorCompleted,
+              color: item.completed ? theme.colorCompleted : theme.color,
             },
-          ]}>
+          ]}
+        >
           {item.text}
         </Text>
         <View style={styles.itemIcons}>
-          <Pressable onPress={() => console.warn('edit pressed', item.key)}>
+          <Pressable onPress={() => setEditModal(true)}>
             <FontAwesomeIcon
               style={styles.itemIcon}
               icon={faEdit}
               size={18}
               color={colors.editIcon}
             />
+            {editModal && (
+              <Modal
+                visible={editModal}
+                onRequestClose={() => setEditModal(false)}
+                transparent
+              >
+                <View
+                  style={[
+                    styles.editModal,
+                    {
+                      backgroundColor: theme.backgroundColor,
+                    },
+                  ]}
+                >
+                  <Text style={{ color: theme.color, fontSize: 24 }}>
+                    Edit todo
+                  </Text>
+                  <TextInput
+                    style={[styles.modalInput, { color: theme.color }]}
+                    onChangeText={setEditText}
+                    value={editText}
+                    placeholder={item.text}
+                    placeholderTextColor={theme.color}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 25,
+                    }}
+                  >
+                    <View
+                      style={{
+                        marginHorizontal: 20,
+                        marginBottom: 20,
+                        width: 100,
+                      }}
+                    >
+                      <Button
+                        title="Cancel"
+                        onPress={() => setEditModal(false)}
+                        color={theme.primary}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        marginHorizontal: 20,
+                        marginBottom: 20,
+                        width: 100,
+                      }}
+                    >
+                      <Button
+                        title="Edit"
+                        onPress={submitEdit}
+                        color={theme.primary}
+                      />
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            )}
           </Pressable>
           <Pressable onPress={() => pressRemoveHandler(item.key)}>
             <FontAwesomeIcon
@@ -57,31 +177,5 @@ export default function TodoItem({
         </View>
       </View>
     </TouchableOpacity>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  item: {
-    padding: 16,
-    marginTop: 16,
-    borderColor: `${colors.primary}`,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  itemText: {
-    flex: 16,
-  },
-  itemIcons: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    marginLeft: 5,
-  },
-  itemIcon: {
-    margin: 5,
-  },
-});

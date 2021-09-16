@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react'
 import {
   View,
   TextInput,
@@ -7,36 +7,47 @@ import {
   Alert,
   Pressable,
   Text,
-} from 'react-native';
-import {ITheme} from '../App';
-import {colors} from '../styles/Colors';
+} from 'react-native'
+import { ITheme } from '../App'
+import { colors } from '../styles/Colors'
 
 type AddTodoParams = {
-  pressAddTodoHandler: any;
-  theme: ITheme;
-};
+  pressAddTodoHandler: (text: string) => void
+  theme: ITheme
+}
 
-export default function AddTodo({pressAddTodoHandler, theme}: AddTodoParams) {
-  const [text, setText] = useState('');
+export default function AddTodo({ pressAddTodoHandler, theme }: AddTodoParams) {
+  const [text, setText] = useState('')
 
   const pressSubmitTodoHandler = (input: string): void => {
     if (text.length > 3) {
-      pressAddTodoHandler(input);
-      setText('');
+      pressAddTodoHandler(input)
+      setText('')
     } else {
       Alert.alert('OOPS!', 'Todos must be over 3 chars long', [
-        {text: 'Understood', onPress: () => {}},
-      ]);
+        { text: 'Understood', onPress: () => {} },
+      ])
     }
-  };
+  }
+
+  const styles = StyleSheet.create({
+    input: {
+      marginBottom: 10,
+      paddingHorizontal: 8,
+      paddingVertical: 6,
+      borderBottomWidth: 2,
+      borderBottomColor: `${theme.primary}`,
+    },
+  })
 
   return (
     <View
       style={{
         flexDirection: 'column',
-      }}>
+      }}
+    >
       <TextInput
-        style={[styles.input, {color: theme.color}]}
+        style={[styles.input, { color: theme.color }]}
         placeholder="New todo..."
         onChangeText={setText}
         value={text}
@@ -45,26 +56,22 @@ export default function AddTodo({pressAddTodoHandler, theme}: AddTodoParams) {
       <Button
         onPress={() => pressSubmitTodoHandler(text)}
         title="add todo"
-        color={colors.primary}
+        color={theme.primary}
       />
       {/* TODO: Change from normal button to change font color */}
-      {/* <View style={{backgroundColor: '#d4d', flexDirection: 'row'}}>
+      {/* <View style={{flex: 1}}>
         <Pressable onPress={() => pressSubmitTodoHandler(text)}>
-          <View style={{backgroundColor: `${colors.primary}`, flex: 1}}>
-            <Text style={{color: colors.fontColorLight}}>Add todo</Text>
+          <View
+            style={{
+              backgroundColor: `${theme.primary}`,
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: theme.color, fontSize: 16}}>Add todo</Text>
           </View>
         </Pressable>
       </View> */}
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  input: {
-    marginBottom: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderBottomWidth: 2,
-    borderBottomColor: `${colors.primary}`,
-  },
-});
