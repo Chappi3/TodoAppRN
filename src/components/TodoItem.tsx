@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from 'react'
+import React, { useState, FunctionComponent, useContext } from 'react'
 import {
   Button,
   Modal,
@@ -9,23 +9,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
-import { ITheme } from '../App'
-import { colors } from '../styles/Colors'
+
 import { useDispatch } from 'react-redux'
 import { Todo } from '../redux/todo/reducer'
 import { actions } from '../redux'
 
+import { ThemeContext } from '../contexts/theme-context'
+
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
+import { colors } from '../styles/Colors'
+
 type TodoItemParams = {
   item: Todo
-  theme: ITheme
 }
 
 type Params = TodoItemParams
 
-export const TodoItem: FunctionComponent<Params> = ({ item, theme }) => {
+export const TodoItem: FunctionComponent<Params> = ({ item }) => {
   const dispatch = useDispatch()
+
+  const { theme } = useContext(ThemeContext)
 
   const [editModal, setEditModal] = useState(false)
   const [editText, setEditText] = useState(item.text)

@@ -1,17 +1,14 @@
-import React from 'react'
-import { View, Text, StyleSheet, Pressable, Switch } from 'react-native'
+import React, { useContext } from 'react'
+import { View, Text, StyleSheet, Switch } from 'react-native'
+
+import { ThemeContext } from '.././contexts/theme-context'
+
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons'
-import { colors } from '../styles/Colors'
-import { ITheme } from '../App'
 
-type HeaderParams = {
-  dark: boolean
-  toggleDark: () => void
-  theme: ITheme
-}
+export default function header() {
+  const { dark, theme, toggleDark } = useContext(ThemeContext)
 
-export default function header({ dark, toggleDark, theme }: HeaderParams) {
   const styles = StyleSheet.create({
     header: {
       height: 40,

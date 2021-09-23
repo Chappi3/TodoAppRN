@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   View,
   TextInput,
@@ -8,17 +8,18 @@ import {
   Pressable,
   Text,
 } from 'react-native'
+
 import { useDispatch } from 'react-redux'
-import { ITheme } from '../App'
 import { actions } from '../redux'
-import { colors } from '../styles/Colors'
 
-type AddTodoParams = {
-  theme: ITheme
-}
+import { ThemeContext } from '../contexts/theme-context'
 
-export default function AddTodo({ theme }: AddTodoParams) {
+type AddTodoParams = {}
+
+export default function AddTodo({}: AddTodoParams) {
   const dispatch = useDispatch()
+
+  const { theme } = useContext(ThemeContext)
 
   const [text, setText] = useState('')
 
