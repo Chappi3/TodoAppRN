@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FunctionComponent } from 'react'
 import {
   Button,
   Modal,
@@ -11,29 +11,35 @@ import {
 } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
-import { ITheme, ITodo } from '../App'
+import { ITheme } from '../App'
 import { colors } from '../styles/Colors'
+import { useDispatch } from 'react-redux'
+import { Todo } from '../redux/todo/reducer'
+import { actions } from '../redux'
 
 type TodoItemParams = {
-  item: ITodo
+  item: Todo
   theme: ITheme
-  pressRemoveHandler: (key: string) => void
-  pressCompleteHandler: (key: string) => void
-  pressEditHandler: (key: string, text: string) => void
 }
 
-export default function TodoItem({
-  item,
-  theme,
-  pressRemoveHandler,
-  pressCompleteHandler,
-  pressEditHandler,
-}: TodoItemParams) {
+type Params = TodoItemParams
+
+export const TodoItem: FunctionComponent<Params> = ({ item, theme }) => {
+  const dispatch = useDispatch()
+
   const [editModal, setEditModal] = useState(false)
   const [editText, setEditText] = useState(item.text)
 
+  const pressCompleteHandler = () => {
+    dispatch(actions.todos.todoComplete(item.id))
+  }
+
+  const pressRemoveHandler = () => {
+    dispatch(actions.todos.todoRemove(item.id))
+  }
+
   const submitEdit = () => {
-    pressEditHandler(item.key, editText)
+    dispatch(actions.todos.todoEdit(item.id, editText))
     setEditModal(false)
   }
 
@@ -84,7 +90,7 @@ export default function TodoItem({
   })
 
   return (
-    <TouchableOpacity onPress={() => pressCompleteHandler(item.key)}>
+    <TouchableOpacity onPress={pressCompleteHandler}>
       <View style={[styles.item, { backgroundColor: theme.backgroundCard }]}>
         <Text
           style={[
@@ -166,7 +172,7 @@ export default function TodoItem({
               </Modal>
             )}
           </Pressable>
-          <Pressable onPress={() => pressRemoveHandler(item.key)}>
+          <Pressable onPress={pressRemoveHandler}>
             <FontAwesomeIcon
               style={styles.itemIcon}
               icon={faTrashAlt}
@@ -179,3 +185,5 @@ export default function TodoItem({
     </TouchableOpacity>
   )
 }
+
+export default TodoItem

@@ -8,20 +8,23 @@ import {
   Pressable,
   Text,
 } from 'react-native'
+import { useDispatch } from 'react-redux'
 import { ITheme } from '../App'
+import { actions } from '../redux'
 import { colors } from '../styles/Colors'
 
 type AddTodoParams = {
-  pressAddTodoHandler: (text: string) => void
   theme: ITheme
 }
 
-export default function AddTodo({ pressAddTodoHandler, theme }: AddTodoParams) {
+export default function AddTodo({ theme }: AddTodoParams) {
+  const dispatch = useDispatch()
+
   const [text, setText] = useState('')
 
   const pressSubmitTodoHandler = (input: string): void => {
     if (text.length > 3) {
-      pressAddTodoHandler(input)
+      dispatch(actions.todos.todoAdd(input))
       setText('')
     } else {
       Alert.alert('OOPS!', 'Todos must be over 3 chars long', [
